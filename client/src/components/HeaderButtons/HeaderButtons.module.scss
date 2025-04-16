@@ -1,0 +1,37 @@
+.headerButtons {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.headerButtons a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    height: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 43px;
+    background-color: #1a1d2e;
+}
+
+.icon {
+    width: 1em;
+    height: 1em;
+  }
+
+  .logoutButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
