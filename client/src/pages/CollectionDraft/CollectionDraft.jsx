@@ -138,6 +138,7 @@ const CollectionDraft = () => {
                     {data.Stocks.map((stock) => (
                         <tr key={stock.ticker}>
                             <td>{stock.name}</td>
+                            <td>{stock.ticker}</td>
                             <td>{stock.price} ₽</td>
                             <td>{stock.dividends ? "Да" : "Нет"}</td>
                             <td>{stock.dividends ? stock.dividend_size : "-"}</td>
