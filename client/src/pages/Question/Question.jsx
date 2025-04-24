@@ -22,12 +22,18 @@ const Question = () => {
 
     const saveAnswersToServer = async (answers) => {
         try {
+            const login = JSON.parse(localStorage.getItem("user"))?.login;
+            if (!login) {
+                console.error("Логин пользователя не найден в localStorage");
+                return;
+            }
+    
             const response = await fetch("/api/ml/save_answers", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(answers),
+                body: JSON.stringify({ login, answers }),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Ошибка сети: ${response.status}`);
             }
@@ -57,18 +63,26 @@ const Question = () => {
         }
     };
 
-    const processNeuralNetworks = async (answers) => {
+    
+    const processNeuralNetworks = async () => {
         try {
+            const login = JSON.parse(localStorage.getItem("user"))?.login;
+            if (!login) {
+                console.error("Логин пользователя не найден в localStorage");
+                return;
+            }
+    
             const marketResponse = await fetch("/api/ml/analyze_market");
             if (!marketResponse.ok) {
                 throw new Error(`Ошибка сети: ${marketResponse.status}`);
             }
+    
             const marketData = await marketResponse.json();
     
             const response = await fetch("/api/ml/generate_portfolio", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ market_data: marketData, user_answers: answers }),
+                body: JSON.stringify({ market_data: marketData, login }),
             });
     
             if (!response.ok) {
