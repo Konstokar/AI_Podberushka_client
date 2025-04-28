@@ -21,7 +21,13 @@ const CollectionDraft = () => {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get("/api/collections/draft", {
+                const login = JSON.parse(localStorage.getItem("user"))?.login;
+                if (!login) {
+                    console.error("Логин пользователя не найден в localStorage");
+                    return;
+                }
+        
+                const response = await axios.get(`/api/collections/draft/${login}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 console.log("Данные с сервера:", response.data);
@@ -42,7 +48,17 @@ const CollectionDraft = () => {
 
     const handleRestart = async () => {
         try {
+            const login = JSON.parse(localStorage.getItem("user"))?.login;
+            if (!login) {
+                console.error("Логин пользователя не найден в localStorage");
+                return;
+            }
+    
             await axios.post("/api/ml/reset", {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+    
+            await axios.delete(`/api/collections/draft/${login}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
     
