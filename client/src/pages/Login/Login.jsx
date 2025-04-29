@@ -66,7 +66,9 @@ const Login = ({ setAuth }) => {
 
                     <button type="submit" disabled={!formData.login || !formData.password || !formData.phone}>Войти</button>
                 </form>
-
+                <p>
+                    Забыли пароль? <Link to="/reset-password">Сбросить пароль</Link>
+                </p>
                 <p>
                     Вас нет в системе? <Link to="/register">Зарегистрироваться</Link>
                 </p>

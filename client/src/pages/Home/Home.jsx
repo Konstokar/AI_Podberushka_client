@@ -57,7 +57,11 @@ const Home = () => {
 
       {!loading && !error && (
         collections.length === 0 ? (
-          <p>У вас пока нет подборок.</p>
+          <>
+            <p>У вас пока нет подборок.</p>
+            <button className="newCollection" onClick={handleNewCollection}>Создать новую подборку</button>
+          </>
+          
         ) : (
           <>
             <div className="table-container">
