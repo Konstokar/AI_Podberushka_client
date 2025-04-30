@@ -8,6 +8,7 @@ import Question from "./pages/Question/Question";
 import CollectionDraft from "./pages/CollectionDraft/CollectionDraft";
 import EditProfile from "./pages/EditProfile/EditProfile";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import Help from "./pages/Help/Help"
 
 import { useEffect, useState } from "react";
 
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/question" element={isAuthenticated ? <Question /> : <Navigate to="/login" />} />
                 <Route path="/confirmation" element={isAuthenticated ? <CollectionDraft /> : <Navigate to="/login" />} />
                 <Route path="/editProfile" element={isAuthenticated ? <EditProfile /> : <Navigate to="/login" />} />
+                <Route path="/help" element={isAuthenticated ? <Help /> : <Navigate to="/login" />} />
 
                 <Route path="*" element={<Welcome />} />
             </Routes>
