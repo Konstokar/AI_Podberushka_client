@@ -21,7 +21,7 @@ const CollectionDraft = () => {
 
         const fetchData = async () => {
             try {
-                const login = JSON.parse(localStorage.getItem("user"))?.login;
+                const login = JSON.parse(localStorage.getItem("pendingLogin"));
                 if (!login) {
                     console.error("Логин пользователя не найден в localStorage");
                     return;
