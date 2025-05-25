@@ -98,8 +98,8 @@ const CollectionDetails = () => {
                 {collection.stocks.map((stock, index) => (
                   <tr key={index}>
                     <td>{stock.name}</td>
-                    <td>{stock.price} ₽</td>
                     <td>{stock.ticker}</td>
+                    <td>{stock.price} ₽</td>
                     <td>{stock.dividends ? "Да" : "Нет"}</td>
                     <td>{stock.dividends ? stock.dividend_size : "-"}</td>
                     <td>{stock.dividends ? stock.dividend_frequency : "-"}</td>
@@ -130,8 +130,8 @@ const CollectionDetails = () => {
                 {collection.bonds.map((bond, index) => (
                   <tr key={index}>
                     <td>{bond.name}</td>
-                    <td>{bond.price} ₽</td>
                     <td>{bond.ticker}</td>
+                    <td>{bond.price} ₽</td>
                     <td>{bond.coupon.size + " ₽" || "-"}</td>
                     <td>{bond.coupon.frequency_per_year || "-"}</td>
                   </tr>
