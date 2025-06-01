@@ -10,7 +10,8 @@ const EditProfile = () => {
         email: "",
         phone: "",
         birthdate: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
 
     const [currentData, setCurrentData] = useState({
@@ -20,6 +21,8 @@ const EditProfile = () => {
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,15 +44,33 @@ const EditProfile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-        setIsFormValid(Object.values({ ...formData, [name]: value }).some(val => val));
+        const updatedForm = { ...formData, [name]: value };
+
+        setFormData(updatedForm);
+
+        // Проверка: есть ли хоть одно непустое поле
+        const anyFieldFilled = Object.entries(updatedForm).some(([key, val]) => 
+            key !== "confirmPassword" && val.trim() !== ""
+        );
+        setIsFormValid(anyFieldFilled);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSuccessMessage("");
+        setErrorMessage("");
+
+        // Проверка совпадения паролей, если они вводятся
+        if (formData.password || formData.confirmPassword) {
+            if (formData.password !== formData.confirmPassword) {
+                setErrorMessage("Пароли не совпадают.");
+                return;
+            }
+            if (formData.password.length < 6) {
+                setErrorMessage("Пароль должен быть не короче 6 символов.");
+                return;
+            }
+        }
 
         try {
             const updatedData = {
@@ -57,35 +78,35 @@ const EditProfile = () => {
                 email: formData.email,
                 phone: formData.phone,
                 birthdate: formData.birthdate,
-                password: formData.password
+                password: formData.password || undefined  // не передаём пустую строку
             };
 
-            console.log("Отправляемые данные:", updatedData);
-
-            const response = await axios.put("/api/users/update", updatedData, {
+            await axios.put("/api/users/update", updatedData, {
                 headers: { "Content-Type": "application/json" }
             });
 
-            console.log("Данные успешно обновлены:", response.data);
+            setSuccessMessage("Профиль успешно обновлён!");
+            setFormData(prev => ({
+                ...prev,
+                password: "",
+                confirmPassword: ""
+            }));
         } catch (error) {
             console.error("Ошибка обновления данных:", error);
+            setErrorMessage("Не удалось обновить данные. Попробуйте позже.");
         }
     };
 
     const handleDeleteProfile = async () => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            if (!user?.login) {
-                console.error("Логин отсутствует");
-                return;
-            }
+            if (!user?.login) return;
 
-            const response = await axios.delete(`/api/users/delete`, {
+            await axios.delete(`/api/users/delete`, {
                 data: { login: user.login },
                 headers: { "Content-Type": "application/json" }
             });
 
-            console.log("Профиль успешно удалён:", response.data);
             localStorage.removeItem("token");
             localStorage.removeItem("user");
             navigate("/login");
@@ -100,6 +121,10 @@ const EditProfile = () => {
             <HeaderButtons />
             <div className="registerContainer">
                 <h2>Редактирование профиля</h2>
+
+                {successMessage && <p className="success-msg">{successMessage}</p>}
+                {errorMessage && <p className="error-msg">{errorMessage}</p>}
+
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Email</label>
@@ -111,6 +136,7 @@ const EditProfile = () => {
                             onChange={handleChange}
                         />
                     </div>
+
                     <div className="form-group">
                         <label>Телефон</label>
                         <input
@@ -121,6 +147,7 @@ const EditProfile = () => {
                             onChange={handleChange}
                         />
                     </div>
+
                     <div className="form-group">
                         <label>Дата рождения</label>
                         <input
@@ -131,6 +158,7 @@ const EditProfile = () => {
                             onChange={handleChange}
                         />
                     </div>
+
                     <div className="form-group">
                         <label>Новый пароль</label>
                         <input
@@ -138,6 +166,17 @@ const EditProfile = () => {
                             name="password"
                             value={formData.password}
                             placeholder="Введите новый пароль"
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Повторите новый пароль</label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            placeholder="Повторите новый пароль"
                             onChange={handleChange}
                         />
                     </div>
