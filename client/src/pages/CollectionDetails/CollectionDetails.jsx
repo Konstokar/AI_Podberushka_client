@@ -120,7 +120,7 @@ const CollectionDetails = () => {
               <thead>
                 <tr>
                   <th>Название</th>
-                  <th>Тикер</th>
+                  <th>ISIN</th>
                   <th>Стоимость</th>
                   <th>Размер купона</th>
                   <th>Частота выплат (в год)</th>

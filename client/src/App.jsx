@@ -7,7 +7,6 @@ import CollectionDetails from "./pages/CollectionDetails/CollectionDetails";
 import Question from "./pages/Question/Question";
 import CollectionDraft from "./pages/CollectionDraft/CollectionDraft";
 import EditProfile from "./pages/EditProfile/EditProfile";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import Help from "./pages/Help/Help"
 
 import { useEffect, useState } from "react";
@@ -30,7 +29,6 @@ function App() {
                 <Route path="/" element={<Welcome />} />
                 <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
                 <Route path="/register" element={<Register setAuth={setIsAuthenticated} />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
 
                 <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
                 <Route path="/collection/:id" element={isAuthenticated ? <CollectionDetails /> : <Navigate to="/login" />} />
